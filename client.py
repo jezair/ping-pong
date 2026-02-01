@@ -45,7 +45,10 @@ font_win = font.Font(None, 72)
 font_main = font.Font(None, 36)
 # --- ЗОБРАЖЕННЯ ----
 bg_image = image.load("assets/bg.jpg").convert_alpha()
+bg_image = transform.scale(bg_image, (WIDTH, HEIGHT))
 
+bg_main_image = image.load("assets/bg_main.jpg").convert_alpha()
+bg_main_image = transform.scale(bg_main_image, (WIDTH, HEIGHT))
 # --- ЗВУКИ ---
 song_meow = mixer.Sound("assets/meow.mp3")
 
@@ -58,10 +61,14 @@ winner = None
 you_winner = None
 my_id, game_state, buffer, client = connect_to_server()
 Thread(target=receive, daemon=True).start()
+
 while True:
     for e in event.get():
         if e.type == QUIT:
             exit()
+
+    #screen.fill((255,0,0))
+    screen.blit(bg_image,(0,0))
 
     if "countdown" in game_state and game_state["countdown"] > 0:
         screen.fill((0, 0, 0))
@@ -96,7 +103,8 @@ while True:
         continue  # Блокує гру після перемоги
 
     if game_state:
-        screen.fill((30, 30, 30))
+        #screen.fill((30, 30, 30))
+        screen.blit(bg_main_image, (0, 0))
         draw.rect(screen, (0, 255, 0), (20, game_state['paddles']['0'], 20, 100))
         draw.rect(screen, (255, 0, 255), (WIDTH - 40, game_state['paddles']['1'], 20, 100))
         draw.circle(screen, (255, 255, 255), (game_state['ball']['x'], game_state['ball']['y']), 10)
