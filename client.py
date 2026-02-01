@@ -5,7 +5,10 @@ from threading import Thread
 
 # ---ПУГАМЕ НАЛАШТУВАННЯ ---
 WIDTH, HEIGHT = 800, 600
+
 init()
+mixer.init()
+
 screen = display.set_mode((WIDTH, HEIGHT))
 clock = time.Clock()
 display.set_caption("Пінг-Понг")
@@ -41,8 +44,13 @@ def receive():
 font_win = font.Font(None, 72)
 font_main = font.Font(None, 36)
 # --- ЗОБРАЖЕННЯ ----
+bg_image = image.load("assets/bg.jpg").convert_alpha()
 
 # --- ЗВУКИ ---
+song_meow = mixer.Sound("assets/meow.mp3")
+
+mixer.music.load("assets/bg.mp3")
+mixer.music.play(-1)
 
 # --- ГРА ---
 game_over = False
@@ -98,10 +106,11 @@ while True:
         if game_state['sound_event']:
             if game_state['sound_event'] == 'wall_hit':
                 # звук відбиття м'ячика від стін
-                pass
+                song_meow.play()
+
             if game_state['sound_event'] == 'platform_hit':
                 # звук відбиття м'ячика від платформи
-                pass
+                song_meow.play()
 
     else:
         wating_text = font_main.render(f"Очікування гравців...", True, (255, 255, 255))
